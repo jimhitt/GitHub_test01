@@ -9,7 +9,7 @@ This project is a simple implementation of Wordle, a word-guessing game, in Pyth
 
 ## Features
 
-* Feedback on letters is displayed similar to the online version:
+* Feedback on letters is displayed similar to the online version of the game:
   * Green: correct letter and correct position
   * Yellow: correct letter but incorrect position
   * Grey: incorrect letter
