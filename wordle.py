@@ -80,27 +80,58 @@ def display_results(guesses, feedbacks):
         i += 1
 
 def main():
-    word_list = load_word_list("words_5_letter.csv")
-    secret_word = choose_secret_word(word_list).upper()
-    attempts = 6
-    guesses = []
-    feedbacks = []
 
-    while attempts > 0:
-        guess = get_user_guess()
-        if not guess:
-            continue
-        guesses.append(guess)
-        feedback = compare_guess_with_secret(guess, secret_word)
-        feedbacks.append(feedback)
-        display_results(guesses, feedbacks)
-        if guess == secret_word:
-            print("Congratulations! You guessed the word!")
+
+    def play_game(attempts = 6):
+        """Play a single game of Wordle"""
+        print(f"You have {attempts} attempts to guess the secret word.")
+        word_list = load_word_list("words_5_letter.csv")
+        secret_word = choose_secret_word(word_list).upper()
+        guesses = []
+        feedbacks = []
+
+        while attempts > 0:
+            guess = get_user_guess()
+            if not guess:
+                continue
+            guesses.append(guess)
+            feedback = compare_guess_with_secret(guess, secret_word)
+            feedbacks.append(feedback)
+            display_results(guesses, feedbacks)
+            if guess == secret_word:
+                print("Congratulations! You guessed the word!")
+                break
+            attempts -= 1
+
+        if attempts == 0:
+            print(f"Game Over! The secret word was {secret_word}.")
+
+    # Main game loop
+    # Set play to 'y' and ask user for number of attempts
+    play = 'y'
+    user_attempts = input("How many attempts would you like? (default is 6): ")
+    try:
+        user_attempts_n = int(user_attempts)
+    except ValueError:
+        print('Invalid input. Defaulting to 6 attempts.')
+        user_attempts_n = 6
+
+    while play == 'y':
+        play_game(user_attempts_n)
+        play = input("Play again? (y/n): ").strip().lower()
+        if play == 'n':
+            print('Thanks for playing!')
             break
-        attempts -= 1
-
-    if attempts == 0:
-        print(f"Game Over! The secret word was {secret_word}.")
+        elif play == 'y':
+            user_attempts = input("How many attempts would you like? (default is 6): ")
+            try:
+                user_attempts_n = int(user_attempts)
+            except ValueError:
+                print('Invalid input. Defaulting to 6 attempts.')
+                user_attempts_n = 6
+        else:
+            print('Invalid input. Exiting game.')
+            break
 
 if __name__ == "__main__":
     main()
